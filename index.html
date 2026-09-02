@@ -2512,7 +2512,7 @@ async function refrescarPanelDesdeServidor() {
     const resp = await fetch('/data/panel-data.json?t=' + Date.now(), { cache: 'no-store' });
     if (!resp.ok) return;
     const data = await resp.json();
-    if (_ultimoGeneradoConocido === null) _ultimoGeneradoConocido = data.generado;
+    if (_ultimoGeneradoConocido === null) _ultimoGeneradoConocido = window.PANEL_DATA ? window.PANEL_DATA.generado : null;
     if (data.generado === _ultimoGeneradoConocido && window.PANEL_DATA) return; // sin cambios
     _ultimoGeneradoConocido = data.generado;
     window.PANEL_DATA = data;
