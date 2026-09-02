@@ -33,16 +33,31 @@ async function githubRequest(path, token, options = {}) {
 }
 
 module.exports = async (req, res) => {
-  if (req.method !== 'POST') {
-    res.status(405).json({ error: 'Método no permitido, usa POST' });
-    return;
-  }
-
-  const token = process.env.GITHUB_TOKEN;
   const owner = process.env.GITHUB_OWNER;
   const repo = process.env.GITHUB_REPO;
   const branch = envOrDefault('GITHUB_BRANCH', 'main');
   const dataPath = envOrDefault('DATA_PATH', 'data/panel-data.json');
+  const token = process.env.GITHUB_TOKEN;
+
+  // TEMPORAL: diagnóstico de configuración, sin exponer el token.
+  // GET /api/update?debug=1
+  if (req.method === 'GET' && req.query && req.query.debug) {
+    res.status(200).json({
+      debug: true,
+      owner: owner || null,
+      repo: repo || null,
+      branch,
+      dataPath,
+      hasToken: !!(token && token.trim()),
+      tokenLength: token ? token.trim().length : 0
+    });
+    return;
+  }
+
+  if (req.method !== 'POST') {
+    res.status(405).json({ error: 'Método no permitido, usa POST' });
+    return;
+  }
 
   if (!token || !owner || !repo) {
     res.status(500).json({ error: 'Faltan variables de entorno GITHUB_TOKEN / GITHUB_OWNER / GITHUB_REPO en Vercel' });
@@ -109,7 +124,7 @@ module.exports = async (req, res) => {
     }
 
     const errBody = await putResp.text();
-    res.status(502).json({ error: `GitHub respondió HTTP ${putResp.status}`, detail: errBody.slice(0, 500) });
+    res.status(502).json({ error: `GitHub respondió HTTP ${putResp.status}`, detail: errBody.slice(0, 500), usedOwner: owner, usedRepo: repo, usedBranch: branch, usedPath: dataPath });
   } catch (err) {
     res.status(500).json({ error: 'Error inesperado al commitear a GitHub', detail: String(err && err.message || err) });
   }
