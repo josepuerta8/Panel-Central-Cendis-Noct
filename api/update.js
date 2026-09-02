@@ -39,63 +39,6 @@ module.exports = async (req, res) => {
   const dataPath = envOrDefault('DATA_PATH', 'data/panel-data.json');
   const token = process.env.GITHUB_TOKEN;
 
-  // TEMPORAL: diagnóstico de configuración y permisos, sin exponer el token.
-  // GET /api/update?debug=1
-  if (req.method === 'GET' && req.query && req.query.debug) {
-    const out = {
-      debug: true,
-      owner: owner || null,
-      repo: repo || null,
-      branch,
-      dataPath,
-      hasToken: !!(token && token.trim()),
-      tokenLength: token ? token.trim().length : 0
-    };
-    try {
-      const repoResp = await githubRequest(`/repos/${owner}/${repo}`, token);
-      out.repoCheckStatus = repoResp.status;
-      const repoBody = await repoResp.json().catch(() => null);
-      out.repoCheckPermissions = repoBody && repoBody.permissions ? repoBody.permissions : null;
-      out.repoCheckMessage = repoBody && repoBody.message ? repoBody.message : null;
-    } catch (e) {
-      out.repoCheckError = String(e && e.message || e);
-    }
-    // Prueba de escritura inofensiva: crea/actualiza un archivo de prueba, no el real.
-    try {
-      const testPath = 'debug-write-test.json';
-      const getTest = await githubRequest(
-        `/repos/${owner}/${repo}/contents/${encodeURIComponent(testPath)}?ref=${encodeURIComponent(branch)}`,
-        token
-      );
-      let testSha;
-      if (getTest.status === 200) {
-        const cur = await getTest.json();
-        testSha = cur.sha;
-      }
-      const testContent = Buffer.from(JSON.stringify({ ping: new Date().toISOString() }), 'utf-8').toString('base64');
-      const putTest = await githubRequest(
-        `/repos/${owner}/${repo}/contents/${encodeURIComponent(testPath)}`,
-        token,
-        {
-          method: 'PUT',
-          body: JSON.stringify({
-            message: 'debug: prueba de escritura',
-            content: testContent,
-            branch,
-            ...(testSha ? { sha: testSha } : {})
-          })
-        }
-      );
-      out.testWriteStatus = putTest.status;
-      const putTestBody = await putTest.json().catch(() => null);
-      out.testWriteMessage = putTestBody && putTestBody.message ? putTestBody.message : null;
-    } catch (e) {
-      out.testWriteError = String(e && e.message || e);
-    }
-    res.status(200).json(out);
-    return;
-  }
-
   if (req.method !== 'POST') {
     res.status(405).json({ error: 'Método no permitido, usa POST' });
     return;
@@ -110,6 +53,7 @@ module.exports = async (req, res) => {
   if (typeof payload === 'string') {
     try { payload = JSON.parse(payload); } catch { payload = null; }
   }
+
   if (!payload || typeof payload !== 'object' || typeof payload.modulos !== 'object') {
     res.status(400).json({ error: 'Cuerpo inválido: se espera el objeto panel-data completo con "modulos"' });
     return;
