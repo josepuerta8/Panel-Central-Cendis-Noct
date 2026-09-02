@@ -39,7 +39,7 @@ module.exports = async (req, res) => {
   const dataPath = envOrDefault('DATA_PATH', 'data/panel-data.json');
   const token = process.env.GITHUB_TOKEN;
 
-  // TEMPORAL: diagnóstico de configuración y permisos, sin exponer el token ni escribir nada.
+  // TEMPORAL: diagnóstico de configuración y permisos, sin exponer el token.
   // GET /api/update?debug=1
   if (req.method === 'GET' && req.query && req.query.debug) {
     const out = {
@@ -60,16 +60,37 @@ module.exports = async (req, res) => {
     } catch (e) {
       out.repoCheckError = String(e && e.message || e);
     }
+    // Prueba de escritura inofensiva: crea/actualiza un archivo de prueba, no el real.
     try {
-      const contentsResp = await githubRequest(
-        `/repos/${owner}/${repo}/contents/${encodeURIComponent(dataPath)}?ref=${encodeURIComponent(branch)}`,
+      const testPath = 'debug-write-test.json';
+      const getTest = await githubRequest(
+        `/repos/${owner}/${repo}/contents/${encodeURIComponent(testPath)}?ref=${encodeURIComponent(branch)}`,
         token
       );
-      out.contentsCheckStatus = contentsResp.status;
-      const contentsBody = await contentsResp.json().catch(() => null);
-      out.contentsCheckMessage = contentsBody && contentsBody.message ? contentsBody.message : null;
+      let testSha;
+      if (getTest.status === 200) {
+        const cur = await getTest.json();
+        testSha = cur.sha;
+      }
+      const testContent = Buffer.from(JSON.stringify({ ping: new Date().toISOString() }), 'utf-8').toString('base64');
+      const putTest = await githubRequest(
+        `/repos/${owner}/${repo}/contents/${encodeURIComponent(testPath)}`,
+        token,
+        {
+          method: 'PUT',
+          body: JSON.stringify({
+            message: 'debug: prueba de escritura',
+            content: testContent,
+            branch,
+            ...(testSha ? { sha: testSha } : {})
+          })
+        }
+      );
+      out.testWriteStatus = putTest.status;
+      const putTestBody = await putTest.json().catch(() => null);
+      out.testWriteMessage = putTestBody && putTestBody.message ? putTestBody.message : null;
     } catch (e) {
-      out.contentsCheckError = String(e && e.message || e);
+      out.testWriteError = String(e && e.message || e);
     }
     res.status(200).json(out);
     return;
@@ -94,14 +115,11 @@ module.exports = async (req, res) => {
     return;
   }
 
-  // El timestamp de "generado" lo fija el servidor, no el navegador del usuario,
-  // para que el sondeo de todas las pestañas compare la misma referencia de tiempo.
   payload.generado = new Date().toISOString();
   const contentStr = JSON.stringify(payload, null, 2) + '\n';
   const contentB64 = Buffer.from(contentStr, 'utf-8').toString('base64');
 
   try {
-    // 1) hay que mandar el sha del archivo actual para poder actualizarlo
     const getResp = await githubRequest(
       `/repos/${owner}/${repo}/contents/${encodeURIComponent(dataPath)}?ref=${encodeURIComponent(branch)}`,
       token
@@ -116,7 +134,6 @@ module.exports = async (req, res) => {
       res.status(502).json({ error: `No se pudo leer el archivo actual en GitHub (HTTP ${getResp.status})`, detail: errBody.slice(0, 500) });
       return;
     }
-    // 404: el archivo aún no existe, se crea sin "sha"
 
     const putResp = await githubRequest(
       `/repos/${owner}/${repo}/contents/${encodeURIComponent(dataPath)}`,
@@ -138,8 +155,6 @@ module.exports = async (req, res) => {
     }
 
     if (putResp.status === 409) {
-      // conflicto: alguien más escribió al mismo tiempo. No reintenta solo —
-      // el navegador que llamó puede reintentar si el usuario vuelve a actuar.
       res.status(409).json({ error: 'Conflicto: otra actualización llegó al mismo tiempo, intenta de nuevo' });
       return;
     }
