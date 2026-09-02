@@ -39,10 +39,10 @@ module.exports = async (req, res) => {
   const dataPath = envOrDefault('DATA_PATH', 'data/panel-data.json');
   const token = process.env.GITHUB_TOKEN;
 
-  // TEMPORAL: diagnóstico de configuración, sin exponer el token.
+  // TEMPORAL: diagnóstico de configuración y permisos, sin exponer el token ni escribir nada.
   // GET /api/update?debug=1
   if (req.method === 'GET' && req.query && req.query.debug) {
-    res.status(200).json({
+    const out = {
       debug: true,
       owner: owner || null,
       repo: repo || null,
@@ -50,7 +50,28 @@ module.exports = async (req, res) => {
       dataPath,
       hasToken: !!(token && token.trim()),
       tokenLength: token ? token.trim().length : 0
-    });
+    };
+    try {
+      const repoResp = await githubRequest(`/repos/${owner}/${repo}`, token);
+      out.repoCheckStatus = repoResp.status;
+      const repoBody = await repoResp.json().catch(() => null);
+      out.repoCheckPermissions = repoBody && repoBody.permissions ? repoBody.permissions : null;
+      out.repoCheckMessage = repoBody && repoBody.message ? repoBody.message : null;
+    } catch (e) {
+      out.repoCheckError = String(e && e.message || e);
+    }
+    try {
+      const contentsResp = await githubRequest(
+        `/repos/${owner}/${repo}/contents/${encodeURIComponent(dataPath)}?ref=${encodeURIComponent(branch)}`,
+        token
+      );
+      out.contentsCheckStatus = contentsResp.status;
+      const contentsBody = await contentsResp.json().catch(() => null);
+      out.contentsCheckMessage = contentsBody && contentsBody.message ? contentsBody.message : null;
+    } catch (e) {
+      out.contentsCheckError = String(e && e.message || e);
+    }
+    res.status(200).json(out);
     return;
   }
 
@@ -124,7 +145,7 @@ module.exports = async (req, res) => {
     }
 
     const errBody = await putResp.text();
-    res.status(502).json({ error: `GitHub respondió HTTP ${putResp.status}`, detail: errBody.slice(0, 500), usedOwner: owner, usedRepo: repo, usedBranch: branch, usedPath: dataPath });
+    res.status(502).json({ error: `GitHub respondió HTTP ${putResp.status}`, detail: errBody.slice(0, 500), getRespStatus: getResp.status });
   } catch (err) {
     res.status(500).json({ error: 'Error inesperado al commitear a GitHub', detail: String(err && err.message || err) });
   }
