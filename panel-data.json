@@ -1,0 +1,376 @@
+{
+  "generado": "2026-08-13T23:33:41",
+  "modulos": {
+    "montacarguistas": {
+      "orden": 1,
+      "nombre": "Avance de Tareas (Montacarguistas)",
+      "fuente": "Seguimiento_Reposicion_Nocturna_v17.html",
+      "modo": "manual",
+      "semaforo": "gris",
+      "hora_corte": null,
+      "actualizado_por": null,
+      "kpis": [],
+      "resumen": "Aún no se ha cargado un corte desde el panel. Corre la app y registra aquí el resumen.",
+      "link_detalle": null
+    },
+    "in_transit": {
+      "orden": 2,
+      "nombre": "Avance de In-Transit (Repositores)",
+      "fuente": "cendis-monitor-intransit",
+      "modo": "a_demanda",
+      "semaforo": "amarillo",
+      "hora_corte": "2026-08-14T19:21:52",
+      "actualizado_por": null,
+      "kpis": [
+        {
+          "etiqueta": "Contenedores",
+          "valor": 262,
+          "unidad": ""
+        },
+        {
+          "etiqueta": "Unidades",
+          "valor": 242782,
+          "unidad": ""
+        },
+        {
+          "etiqueta": "+3 días",
+          "valor": 2,
+          "unidad": ""
+        }
+      ],
+      "resumen": "262 contenedores en tránsito (242.782 uds) repartidos en 14 pisos destino. 2 contenedores con más de 3 días. Corte del 14/08/2026 19:21 (turno noche). Detalle completo por piso en el artefacto \"Monitor Intransit Cendis\".",
+      "link_detalle": null,
+      "detalle_piso": {
+        "L": 49,
+        "P": 48,
+        "H": 33,
+        "K": 27,
+        "E": 25,
+        "J": 19,
+        "F": 17,
+        "G": 17,
+        "M": 16,
+        "I": 4,
+        "1": 2,
+        "4": 2,
+        "O": 2,
+        "A": 1
+      }
+    },
+    "pr_antiguedad": {
+      "orden": 3,
+      "nombre": "Antigüedad PR",
+      "fuente": "cendis-monitor-intransit",
+      "modo": "a_demanda",
+      "semaforo": "amarillo",
+      "hora_corte": "2026-08-14T19:21:52",
+      "actualizado_por": null,
+      "kpis": [
+        {
+          "etiqueta": "En puerta",
+          "valor": 895,
+          "unidad": ""
+        },
+        {
+          "etiqueta": "+3 días",
+          "valor": 4,
+          "unidad": ""
+        },
+        {
+          "etiqueta": "Vacíos",
+          "valor": 3,
+          "unidad": ""
+        }
+      ],
+      "resumen": "895 contenedores en puerta de recepción (505.691 uds), 4 con más de 3 días y 3 vacíos. Corte de conteo del 14/08/2026 19:21.",
+      "link_detalle": null,
+      "contenedores_viejos": [
+        {
+          "ubi": "PRBH",
+          "cont": "00000029000037556428",
+          "item": "",
+          "desc": "",
+          "und": 0,
+          "fecha": "2026-06-11 17:17:48",
+          "dias": 64.09
+        },
+        {
+          "ubi": "PRBH",
+          "cont": "00000029000038164285",
+          "item": "",
+          "desc": "",
+          "und": 0,
+          "fecha": "2026-07-04 12:06:17",
+          "dias": 41.3
+        },
+        {
+          "ubi": "PRBH",
+          "cont": "00000029000038823968",
+          "item": "",
+          "desc": "",
+          "und": 0,
+          "fecha": "2026-07-31 15:38:48",
+          "dias": 14.15
+        },
+        {
+          "ubi": "PR07",
+          "cont": "00000029000039040149",
+          "item": "111773891",
+          "desc": "Papel Higienico Sutil 4 Rollos 500Hojas",
+          "und": 144,
+          "fecha": "2026-08-10 13:54:58",
+          "dias": 4.23
+        }
+      ]
+    },
+    "pr_criticos": {
+      "orden": 3.5,
+      "nombre": "PR Críticos (sin stock en CENDIS)",
+      "fuente": "Validador_Stock_Critico_PR_CENDIS.html",
+      "modo": "manual",
+      "semaforo": "gris",
+      "hora_corte": null,
+      "actualizado_por": null,
+      "kpis": [],
+      "resumen": "Aún no se ha cargado ni analizado un corte de criticidad PR (R042/R120/R140).",
+      "link_detalle": null
+    },
+    "ventanas": {
+      "orden": 4,
+      "nombre": "Seguimiento Ventanas",
+      "fuente": "cendis-monitor-intransit",
+      "modo": "a_demanda",
+      "semaforo": "amarillo",
+      "hora_corte": "2026-08-14T19:21:52",
+      "actualizado_por": null,
+      "kpis": [
+        {
+          "etiqueta": "En ventana",
+          "valor": 517,
+          "unidad": ""
+        },
+        {
+          "etiqueta": "Unidades",
+          "valor": 279806,
+          "unidad": ""
+        },
+        {
+          "etiqueta": "+3 días",
+          "valor": 5,
+          "unidad": ""
+        }
+      ],
+      "resumen": "517 paletas/bultos en ventana (279.806 uds), split bultico/paleta completa en el detalle. 5 con más de 3 días. Corte del 14/08/2026 19:21 (turno noche).",
+      "link_detalle": null,
+      "composicion": {
+        "BULTICO": {
+          "ventanas": 16,
+          "pallets": 387,
+          "unidades": 119752
+        },
+        "PALETA_COMPLETA": {
+          "ventanas": 71,
+          "pallets": 130,
+          "unidades": 160054
+        }
+      },
+      "ventanas_viejas": [
+        {
+          "vent": "VT43MG B",
+          "tipo": "BULTICO",
+          "cont": "00000029000039041273",
+          "item": "113687531",
+          "desc": "Rizador Okoi De Pestañas",
+          "und": 432,
+          "fecha": "2026-08-11 13:02:31",
+          "dias": 3.26
+        },
+        {
+          "vent": "VT42HM",
+          "tipo": "PALETA COMPLETA",
+          "cont": "00000029000038870135",
+          "item": "116479797",
+          "desc": "Champu Dove Nutricion Trioleos 370Ml",
+          "und": 756,
+          "fecha": "2026-08-11 13:48:15",
+          "dias": 3.23
+        },
+        {
+          "vent": "VT43MG B",
+          "tipo": "BULTICO",
+          "cont": "00000029000039052565",
+          "item": "115370511",
+          "desc": "Isdin Fotoprotector Fusion Water Color Claro Spf50 50Ml",
+          "und": 48,
+          "fecha": "2026-08-11 15:33:10",
+          "dias": 3.16
+        },
+        {
+          "vent": "VT43MG B",
+          "tipo": "BULTICO",
+          "cont": "00000029000039052572",
+          "item": "115461632",
+          "desc": "Agua Micelar ISDIN 4 En 1 400mll",
+          "und": 72,
+          "fecha": "2026-08-11 15:46:19",
+          "dias": 3.15
+        },
+        {
+          "vent": "VT41GD",
+          "tipo": "PALETA COMPLETA",
+          "cont": "00000029000038865965",
+          "item": "111031918",
+          "desc": "Cuticlin 20mg 30Capsulas Isotretinoina Vivax",
+          "und": 224,
+          "fecha": "2026-08-11 17:44:25",
+          "dias": 3.07
+        }
+      ]
+    },
+    "puestos_cero": {
+      "orden": 5,
+      "nombre": "Alerta Puestos en Cero",
+      "fuente": "Seguimiento_Reposicion_Nocturna_v17.html (pestañas Puesto en Cero / Alertas)",
+      "modo": "manual",
+      "semaforo": "gris",
+      "hora_corte": null,
+      "actualizado_por": null,
+      "kpis": [],
+      "resumen": "Aún no se ha cargado un corte de puestos en cero.",
+      "link_detalle": null
+    },
+    "kpi": {
+      "orden": 6,
+      "nombre": "KPI",
+      "fuente": "cendis-informe-semanal",
+      "modo": "a_demanda",
+      "semaforo": "amarillo",
+      "hora_corte": "2026-08-14T23:59:00",
+      "actualizado_por": null,
+      "kpis": [
+        {
+          "etiqueta": "Cumplimiento de tareas",
+          "valor": "97.3%",
+          "unidad": ""
+        },
+        {
+          "etiqueta": "Fill Rate despachado",
+          "valor": "99.86%",
+          "unidad": ""
+        },
+        {
+          "etiqueta": "PR que quedan/día",
+          "valor": 192,
+          "unidad": ""
+        }
+      ],
+      "resumen": "7 indicadores mejorando (PR almacenados 491/noche, cancelaciones 580/día, 3er lote 86 uds, Post 4PM 174/noche, PR que quedan 192/día, ítems pendientes 18/día, ROP DYM 115 tareas/noche), 3 estables (Fill Rate 99.86%, cumplimiento de tareas 97.3%, demanda manual 681/noche) y 2 en desmejora (In Transit 20 pal./noche, ROP-Almacenaje con caída de 66.2% en paletas procesadas). Fuente: Dashboard NOC, corte al 14/08/2026 (9 noches operativas de agosto, mes en curso).",
+      "link_detalle": null,
+      "fuente_nota": "Fuente: Dashboard NOC — corte al 14/08/2026 (9 noches operativas de agosto; la noche del 15/08 está en curso y no se incluye). Comparativo vs julio (mes anterior, 23 noches) y vs promedio anual (x̄ ene–ago 2026).",
+      "grupos": [
+        {
+          "grupo": "up",
+          "titulo": "▲ Mejorando",
+          "items": [
+            {
+              "icono": "📦",
+              "valor": "491",
+              "etiqueta": "PR almacenados<br>promedio / noche",
+              "delta": "+16.74% vs julio · +28.5% vs prom. anual"
+            },
+            {
+              "icono": "🧾",
+              "valor": "580",
+              "etiqueta": "Unidades canceladas<br>promedio / día",
+              "delta": "−27.56% vs julio · −33.0% vs prom. anual<br><em>5.223 uds acumuladas en el mes</em>"
+            },
+            {
+              "icono": "⏳",
+              "valor": "86",
+              "etiqueta": "Canceladas antes<br>del 3er lote",
+              "delta": "−35.85% vs julio · −63.2% vs prom. anual<br><em>10.7% del total de canceladas</em>"
+            },
+            {
+              "icono": "🕓",
+              "valor": "174",
+              "etiqueta": "Contenedores Post 4PM<br>/ noche",
+              "delta": "−27.77% vs julio · −1.6% vs prom. anual<br><em>Menor es mejor</em>"
+            },
+            {
+              "icono": "📦",
+              "valor": "192",
+              "etiqueta": "PR que quedan<br>por día",
+              "delta": "−41.3% vs corte anterior (327, cierre julio)<br><em>Prom. Almac./Quedan 256% · máx. 469</em>"
+            },
+            {
+              "icono": "🛻",
+              "valor": "18",
+              "etiqueta": "Ítems pendientes<br>(montacarguistas) / día",
+              "delta": "−10% vs corte anterior (20)<br><em>Máx. 38 · 1 turno en cero · 8 con pendientes</em>"
+            },
+            {
+              "icono": "🎯",
+              "valor": "115",
+              "etiqueta": "Tareas de ROP DYM<br>/ noche",
+              "delta": "+14.08% vs julio · +325.9% vs prom. anual<br><em>Reposición on pedido en estanterías DYM (indicador nuevo en el dashboard)</em>"
+            }
+          ]
+        },
+        {
+          "grupo": "hold",
+          "titulo": "▶ Se Mantiene",
+          "items": [
+            {
+              "icono": "🎯",
+              "valor": "99.86%",
+              "etiqueta": "Fill Rate despachado",
+              "delta": "Estable en nivel de excelencia · −0.01% vs julio"
+            },
+            {
+              "icono": "✅",
+              "valor": "97.3%",
+              "etiqueta": "Cumplimiento<br>de tareas",
+              "delta": "−0.61% vs julio (récord del año: 97.9%) · +2.3% vs prom. anual"
+            },
+            {
+              "icono": "📋",
+              "valor": "681",
+              "etiqueta": "Tareas de la demanda<br>(manuales) / noche",
+              "delta": "+1.87% vs julio · −12.4% vs prom. anual<br><em>El dashboard ahora reporta combinadas DYM+B.O.; antes se veían por separado</em>"
+            }
+          ]
+        },
+        {
+          "grupo": "down",
+          "titulo": "▼ Desmejora",
+          "items": [
+            {
+              "icono": "🚚",
+              "valor": "20",
+              "etiqueta": "In Transit / noche",
+              "delta": "+16.70% vs julio · −54.8% vs prom. anual<br><em>Más paletas en tránsito = mayor rezago</em>"
+            },
+            {
+              "icono": "📉",
+              "valor": "2.128",
+              "etiqueta": "ROP procesados<br>paletas / mes (Almacenaje)",
+              "delta": "−66.2% vs julio (6.290 pal.)<br><em>≈304 pal./noche activa · 7 de 9 noches con ROP</em>"
+            }
+          ]
+        }
+      ]
+    },
+    "auditorias": {
+      "orden": 7,
+      "nombre": "Historial de Auditorías",
+      "fuente": "Checklist CENDIS (Google Apps Script, fase de prueba)",
+      "modo": "drilldown",
+      "semaforo": "gris",
+      "hora_corte": null,
+      "actualizado_por": null,
+      "kpis": [],
+      "resumen": "Sección de solo drilldown por ahora — abre el Dashboard de Checklist CENDIS para ver el detalle en vivo.",
+      "link_detalle": "https://script.google.com/a/macros/farmatodo.com/s/AKfycbzEnJ5t567JobdU_SD7KNAzpdTKjTIyJVzhrWSTqm6oO4nGi3rMyeU2wliWL8FUEhFQ/exec"
+    }
+  }
+}

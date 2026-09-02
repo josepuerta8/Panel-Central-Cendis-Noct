@@ -1,0 +1,9 @@
+{
+  "name": "Panel-Central-Cendis-Noct",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Panel Central del turno nocturno CENDIS Charallave — Farmatodo",
+  "engines": {
+    "node": ">=18"
+  }
+}
